@@ -416,3 +416,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Don't commit API keys 
+**/appsettings.json  
+# But keep the example 
+!**/appsettings.example.json
