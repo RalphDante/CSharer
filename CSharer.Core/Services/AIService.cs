@@ -8,7 +8,7 @@ namespace CSharer.Core.Services
         private readonly string _apiKey;
         private readonly string _model;
 
-        public AIService(string apiKey, string model = "gpt-4o-mini")
+        public AIService(string apiKey, string model = "llama-3.3-70b-versatile")
         {
             _apiKey = apiKey;
             _model = model;
@@ -16,9 +16,9 @@ namespace CSharer.Core.Services
 
         public async Task<string> GenerateCaption(string videoFileName, string context = "")
         {
-            var client = new RestClient("https://api.openai.com/v1/chat/completions");
+            var client = new RestClient("https://api.groq.com/openai/v1/chat/completions");
             var request = new RestRequest("", Method.Post);
-
+            
             request.AddHeader("Authorization", $"Bearer {_apiKey}");
             request.AddHeader("Content-Type", "application/json");
 
@@ -31,12 +31,14 @@ namespace CSharer.Core.Services
                 {
                     new { role = "user", content = prompt }
                 },
-                max_tokens = 100
+                max_tokens = 100,
+                temperature = 0.7
             };
 
             request.AddJsonBody(body);
-            var response = await client.ExecuteAsync(request);
 
+            var response = await client.ExecuteAsync(request);
+            
             if (!response.IsSuccessful)
             {
                 throw new Exception($"AI API Error: {response.Content}");
