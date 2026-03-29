@@ -4,11 +4,11 @@ Automated video distribution system for social media platforms.
 
 ## Features
 
-- 🤖 AI-generated viral captions (OpenAI)
-- 📤 Auto-post to Buffer (YouTube, TikTok, Instagram)
-- 📌 Auto-post to Pinterest
-- 👀 Folder watching for new videos
-- ⚡ Automated workflow
+- AI-generated viral captions (Groq)
+- Auto-post to Buffer (YouTube, TikTok, Instagram)
+- Auto-post to Pinterest
+- Folder watching for new videos
+- Automated workflow
 
 ## Prerequisites
 
@@ -42,8 +42,8 @@ dotnet run --project CSharer.Console
 ## Project Structure
 
 - `CSharer.Core` - Shared services and models
-- `CSharer.Console` - Console application (Week 1-2)
-- `CSharer.WinForms` - Windows Forms UI (Week 3-4)
+- `CSharer.Console` - Console application
+- `CSharer.WinForms` - Windows Forms UI
 
 ## Development
 
@@ -55,7 +55,7 @@ We use branch workflow:
 
 ## Team
 
-- [Your Name] - Lead Developer
-- [Teammate 1] - Database & CRUD
-- [Teammate 2] - File Watcher & Config
-- [Teammate 3] - Documentation & Testing
+- [COMANDANTE] - Lead Developer
+- [GALUA] - Database & CRUD
+- [BABAYSON] - WinForms/ UI
+- [REYES] - Documentation & Testing
