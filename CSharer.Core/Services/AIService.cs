@@ -1,1 +1,49 @@
-using Newtonsoft.Json; using RestSharp;  namespace CSharer.Core.Services { 	public class AIService 	{     	private readonly string _apiKey;     	private readonly string _model;      	public AIService(string apiKey, string model = "gpt-4o-mini")     	{         	_apiKey = apiKey;         	_model = model;     	}      	public async Task<string> GenerateCaption(string videoFileName, string context = "")     	{         	var client = new RestClient("https://api.openai.com/v1/chat/completions");         	var request = new RestRequest("", Method.Post);                      	request.AddHeader("Authorization", $"Bearer {_apiKey}");         	request.AddHeader("Content-Type", "application/json");          	var prompt = $"Generate a viral, engaging caption for a video titled '{videoFileName}'. {context} Keep it under 100 characters, catchy, and include relevant emojis. NO hashtags.";          	var body = new         	{             	model = _model,             	messages = new[]             	{      	           new { role = "user", content = prompt }             	},             	max_tokens = 100         	};          	request.AddJsonBody(body);          	var response = await client.ExecuteAsync(request);                      	if (!response.IsSuccessful)         	{             	throw new Exception($"AI API Error: {response.Content}");         	}          	dynamic? result = JsonConvert.DeserializeObject(response.Content ?? "");         	return result?.choices?[0]?.message?.content?.ToString()?.Trim() ?? "Check this out! 🔥";     	} 	} }
+using Newtonsoft.Json;
+using RestSharp;
+
+namespace CSharer.Core.Services
+{
+    public class AIService
+    {
+        private readonly string _apiKey;
+        private readonly string _model;
+
+        public AIService(string apiKey, string model = "gpt-4o-mini")
+        {
+            _apiKey = apiKey;
+            _model = model;
+        }
+
+        public async Task<string> GenerateCaption(string videoFileName, string context = "")
+        {
+            var client = new RestClient("https://api.openai.com/v1/chat/completions");
+            var request = new RestRequest("", Method.Post);
+
+            request.AddHeader("Authorization", $"Bearer {_apiKey}");
+            request.AddHeader("Content-Type", "application/json");
+
+            var prompt = $"Generate a viral, engaging caption for a video titled '{videoFileName}'. {context} Keep it under 100 characters, catchy, and include relevant emojis. NO hashtags.";
+
+            var body = new
+            {
+                model = _model,
+                messages = new[]
+                {
+                    new { role = "user", content = prompt }
+                },
+                max_tokens = 100
+            };
+
+            request.AddJsonBody(body);
+            var response = await client.ExecuteAsync(request);
+
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"AI API Error: {response.Content}");
+            }
+
+            dynamic? result = JsonConvert.DeserializeObject(response.Content ?? "");
+            return result?.choices?[0]?.message?.content?.ToString()?.Trim() ?? "Check this out! 🔥";
+        }
+    }
+}
