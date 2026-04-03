@@ -8,9 +8,8 @@ namespace CSharer.Console
     {
         static async Task Main(string[] args)
         {
-            System.Console.WriteLine("🚀 CSharer - Automated Video Publisher\n");
+            System.Console.WriteLine("🚀 CSharer - YouTube Auto-Uploader\n");
 
-            // Load configuration from the Console project directory
             var basePath = AppContext.BaseDirectory;
             var config = new ConfigurationBuilder()
                 .SetBasePath(basePath)
@@ -20,27 +19,26 @@ namespace CSharer.Console
             var settings = config.Get<AppSettings>() ?? throw new Exception("Failed to load settings");
 
             // Initialize services
-            var aiService = new AIService(settings.APIs.OpenAI.ApiKey, settings.APIs.OpenAI.Model);
-            var bufferService = new BufferService(settings.APIs.Buffer.AccessToken, settings.APIs.Buffer.ProfileIds);
-            var pinterestService = new PinterestService(settings.APIs.Pinterest.AccessToken, settings.APIs.Pinterest.BoardId);
+            var aiService = new AIService(settings.APIs.Groq.ApiKey, settings.APIs.Groq.Model);
+            var youtubeService = new YouTubeUploadService(settings.APIs.YouTube.ClientSecretPath);
             var fileWatcher = new FileWatcherService();
 
-            // Handle new videos
             fileWatcher.OnNewVideoDetected += async (videoPath) =>
             {
                 try
                 {
-                    var fileName = Path.GetFileNameWithoutExtension(videoPath);
-                    
-                    System.Console.WriteLine($"📝 Generating caption for: {fileName}");
-                    var caption = await aiService.GenerateCaption(fileName);
-                    System.Console.WriteLine($"Caption: {caption}");
+                    System.Console.WriteLine($"\n📝 Generating metadata...");
 
-                    System.Console.WriteLine("📤 Uploading to Buffer...");
-                    await bufferService.UploadVideo(videoPath, caption, settings.Defaults.Hashtags);
+                    var title = await aiService.GenerateStudyTitle();
+                    var description = await aiService.GenerateStudyDescription(title);
+                    var hashtags = await aiService.GenerateHashtags();
 
-                    System.Console.WriteLine("📌 Uploading to Pinterest...");
-                    await pinterestService.UploadVideoPin(videoPath, caption);
+                    System.Console.WriteLine($"Title: {title}");
+                    System.Console.WriteLine($"Description: {description}");
+                    System.Console.WriteLine($"Hashtags: {hashtags}");
+
+                    System.Console.WriteLine("\n📤 Uploading to YouTube...");
+                    await youtubeService.UploadVideo(videoPath, title, $"{description}\n\n{hashtags}", settings.Defaults.Hashtags);
 
                     System.Console.WriteLine("✅ Done!\n");
                 }
@@ -50,7 +48,6 @@ namespace CSharer.Console
                 }
             };
 
-            // Start watching
             fileWatcher.Start(settings.WatchFolder);
 
             System.Console.WriteLine("\nPress any key to stop...");

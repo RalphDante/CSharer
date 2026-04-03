@@ -10,8 +10,7 @@ namespace CSharer.Core.Config
     public class ApiSettings
     {
         public GroqSettings Groq { get; set; } = new();
-        public BufferSettings Buffer { get; set; } = new();
-        public PinterestSettings Pinterest { get; set; } = new();
+        public YouTubeSettings YouTube { get; set; } = new();
     }
 
     public class GroqSettings
@@ -20,16 +19,9 @@ namespace CSharer.Core.Config
         public string Model { get; set; } = "llama-3.3-70b-versatile";
     }
 
-    public class BufferSettings
+    public class YouTubeSettings
     {
-        public string AccessToken { get; set; } = string.Empty;
-        public List<string> ProfileIds { get; set; } = new();
-    }
-
-    public class PinterestSettings
-    {
-        public string AccessToken { get; set; } = string.Empty;
-        public string BoardId { get; set; } = string.Empty;
+        public string ClientSecretPath { get; set; } = string.Empty;
     }
 
     public class DefaultSettings
