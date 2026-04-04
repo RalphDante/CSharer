@@ -37,7 +37,7 @@ namespace CSharer.Core.Services
                         return false;
                     }
 
-                    Console.WriteLine($"✓ Posted to Buffer profile: {profileId}");
+                    Console.WriteLine($"Posted to Buffer profile: {profileId}");
                 }
 
                 return true;

@@ -421,3 +421,6 @@ FodyWeavers.xsd
 **/appsettings.json  
 # But keep the example 
 !**/appsettings.example.json
+
+# Secrets
+client_secret.json

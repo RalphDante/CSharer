@@ -47,7 +47,7 @@ namespace CSharer.Core.Services
                     },
                     Status = new VideoStatus
                     {
-                        PrivacyStatus = "public" // Change to "public" when ready
+                        PrivacyStatus = "private" // Change to "public" when ready
                     }
                 };
 
@@ -59,25 +59,25 @@ namespace CSharer.Core.Services
                     switch (progress.Status)
                     {
                         case UploadStatus.Uploading:
-                            Console.WriteLine($"📤 Uploading: {progress.BytesSent} bytes");
+                            Console.WriteLine($"Uploading: {progress.BytesSent} bytes");
                             break;
                         case UploadStatus.Failed:
-                            Console.WriteLine($"❌ Upload failed: {progress.Exception}");
+                            Console.WriteLine($"Upload failed: {progress.Exception}");
                             break;
                     }
                 };
 
                 videosInsertRequest.ResponseReceived += video =>
                 {
-                    Console.WriteLine($"✅ Video uploaded! ID: {video.Id}");
-                    Console.WriteLine($"🔗 URL: https://www.youtube.com/watch?v={video.Id}");
+                    Console.WriteLine($"Video uploaded! ID: {video.Id}");
+                    Console.WriteLine($"URL: https://www.youtube.com/watch?v={video.Id}");
                 };
 
                 var uploadResponse = await videosInsertRequest.UploadAsync();
 
                 if (uploadResponse.Status == UploadStatus.Completed)
                 {
-                    Console.WriteLine("✓ Uploaded to YouTube successfully");
+                    Console.WriteLine("Uploaded to YouTube successfully");
                     return true;
                 }
                 else

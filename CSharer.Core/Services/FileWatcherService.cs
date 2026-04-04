@@ -48,7 +48,7 @@ namespace CSharer.Core.Services
 
                     if (!await IsFileReady(e.FullPath))
                     {
-                        Console.WriteLine($"⚠️ Skipping {e.Name} - file not ready");
+                        Console.WriteLine($"Skipping {e.Name} - file not ready");
                         return;
                     }
 
@@ -56,13 +56,13 @@ namespace CSharer.Core.Services
                 });
             };
             _watcher.EnableRaisingEvents = true;
-            Console.WriteLine($"👀 Watching folder: {folderPath}");
+            Console.WriteLine($"Watching folder: {folderPath}");
         }
 
         public void Stop()
         {
             _watcher?.Dispose();
-            Console.WriteLine("⏸ Stopped watching folder");
+            Console.WriteLine("Stopped watching folder");
         }
     }
 }

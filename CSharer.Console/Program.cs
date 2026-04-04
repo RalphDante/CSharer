@@ -8,7 +8,7 @@ namespace CSharer.Console
     {
         static async Task Main(string[] args)
         {
-            System.Console.WriteLine("🚀 CSharer - YouTube Auto-Uploader\n");
+            System.Console.WriteLine("CSharer - YouTube Auto-Uploader\n");
 
             var basePath = AppContext.BaseDirectory;
             var config = new ConfigurationBuilder()
@@ -27,7 +27,7 @@ namespace CSharer.Console
             {
                 try
                 {
-                    System.Console.WriteLine($"\n📝 Generating metadata...");
+                    System.Console.WriteLine($"\nGenerating metadata...");
 
                     var title = await aiService.GenerateStudyTitle();
                     var description = await aiService.GenerateStudyDescription(title);
@@ -37,14 +37,14 @@ namespace CSharer.Console
                     System.Console.WriteLine($"Description: {description}");
                     System.Console.WriteLine($"Hashtags: {hashtags}");
 
-                    System.Console.WriteLine("\n📤 Uploading to YouTube...");
+                    System.Console.WriteLine("\nUploading to YouTube...");
                     await youtubeService.UploadVideo(videoPath, title, $"{description}\n\n{hashtags}", settings.Defaults.Hashtags);
 
-                    System.Console.WriteLine("✅ Done!\n");
+                    System.Console.WriteLine("Done!\n");
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"❌ Error: {ex.Message}\n");
+                    System.Console.WriteLine($"Error: {ex.Message}\n");
                 }
             };
 
