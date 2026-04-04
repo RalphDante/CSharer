@@ -419,8 +419,7 @@ FodyWeavers.xsd
 
 # Don't commit API keys 
 **/appsettings.json  
+client_secret.json
 # But keep the example 
 !**/appsettings.example.json
-
-# Secrets
-client_secret.json
+!client_secret.example.json

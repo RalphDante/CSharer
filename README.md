@@ -31,6 +31,7 @@ dotnet restore
 3. Configure API keys
 ```bash
 cp CSharer.Console/appsettings.example.json CSharer.Console/appsettings.json
+cp client_secret.example.json client_secret.json
 # Edit appsettings.json with your API keys
 ```
 
@@ -44,6 +45,7 @@ dotnet run --project CSharer.Console
 - `CSharer.Core` - Shared services and models
 - `CSharer.Console` - Console application
 - `CSharer.WinForms` - Windows Forms UI
+- `CSharer.Database` - MySQL Services
 
 ## Development
 
