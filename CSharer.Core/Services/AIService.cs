@@ -56,7 +56,8 @@ namespace CSharer.Core.Services
             request.AddHeader("Content-Type", "application/json");
 
             var prompt = $"Write a 2-3 sentence YouTube description for a study tips video titled: \"{title}\". " +
-                        "Be engaging, mention what viewers will learn, and end with a call to action. No hashtags.";
+                        "Be engaging, mention what viewers will learn, and end with a call to action. No hashtags. " +
+                        "Include the link 'mastery-study.web.app'";
 
             var body = new
             {
