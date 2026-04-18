@@ -1,6 +1,7 @@
 namespace CSharer.Core.Models 
 { 	
     public class VideoPost 	{     	
+        public int Id { get; set; }
         public string VideoPath { get; set; } = string.Empty;     	
         public string FileName { get; set; } = string.Empty;     	
         public string GeneratedCaption { get; set; } = string.Empty;     	
