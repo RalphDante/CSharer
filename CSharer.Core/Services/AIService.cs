@@ -14,27 +14,27 @@ namespace CSharer.Core.Services
             _model = model;
         }
 
-        public async Task<string> GenerateStudyTitle()
+        public async Task<string> GenerateStudyTitle(string extraRules = "")
         {
             var client = new RestClient("https://api.groq.com/openai/v1/chat/completions");
             var request = new RestRequest("", Method.Post);
-            
+
             request.AddHeader("Authorization", $"Bearer {_apiKey}");
             request.AddHeader("Content-Type", "application/json");
 
             var prompt = "Generate ONE unique, viral YouTube title for a study tips video. " +
-                 "Topics can include: gamifying studying, focus techniques, note-taking methods, " +
-                 "beating procrastination, memory tricks, study schedules, or exam prep. " +
-                 "Format: 'How To [Action] [Benefit]' or similar. Keep the full title under 70 characters. " +
-                 "End the title with 1-2 relevant hashtags like #StudyTips #StudentLife. " +
-                 "No quotes. Just the title with hashtags at the end.";
+                         "Topics can include: gamifying studying, focus techniques, note-taking methods, " +
+                         "beating procrastination, memory tricks, study schedules, or exam prep. " +
+                         "Format: 'How To [Action] [Benefit]' or similar. Keep the full title under 70 characters. " +
+                         $"Additional instructions: {extraRules} " +
+                         "No quotes. Just the title.";
 
             var body = new
             {
                 model = _model,
                 messages = new[] { new { role = "user", content = prompt } },
                 max_tokens = 50,
-                temperature = 0.9  // Higher = more variety each run
+                temperature = 0.9
             };
 
             request.AddJsonBody(body);
@@ -47,7 +47,7 @@ namespace CSharer.Core.Services
             return result?.choices?[0]?.message?.content?.ToString()?.Trim() ?? "How To Study Smarter 📚";
         }
 
-        public async Task<string> GenerateStudyDescription(string title)
+        public async Task<string> GenerateStudyDescription(string title, string extraRules = "")
         {
             var client = new RestClient("https://api.groq.com/openai/v1/chat/completions");
             var request = new RestRequest("", Method.Post);
@@ -56,8 +56,8 @@ namespace CSharer.Core.Services
             request.AddHeader("Content-Type", "application/json");
 
             var prompt = $"Write a 2-3 sentence YouTube description for a study tips video titled: \"{title}\". " +
-                        "Be engaging, mention what viewers will learn, and end with a call to action. No hashtags. " +
-                        "Include the link 'mastery-study.web.app'";
+                         "Be engaging, mention what viewers will learn, and end with a call to action. No hashtags. " +
+                         $"Additional instructions: {extraRules}";
 
             var body = new
             {
@@ -77,7 +77,7 @@ namespace CSharer.Core.Services
             return result?.choices?[0]?.message?.content?.ToString()?.Trim() ?? "Watch till the end to level up your study game!";
         }
 
-        public async Task<string> GenerateHashtags()
+        public async Task<string> GenerateHashtags(string extraRules = "")
         {
             var client = new RestClient("https://api.groq.com/openai/v1/chat/completions");
             var request = new RestRequest("", Method.Post);
@@ -86,15 +86,16 @@ namespace CSharer.Core.Services
             request.AddHeader("Content-Type", "application/json");
 
             var prompt = "Generate 5 YouTube hashtags for a study tips video. " +
-                        "Mix broad and niche tags. Examples of good ones: #StudyTips #HowToStudy #StudentLife #StudyMotivation #ExamPrep. " +
-                        "Return ONLY the hashtags separated by spaces, nothing else.";
+                         "Mix broad and niche tags. Examples of good ones: #StudyTips #HowToStudy #StudentLife #StudyMotivation #ExamPrep. " +
+                         $"Additional instructions: {extraRules} " +
+                         "Return ONLY the hashtags separated by spaces, nothing else.";
 
             var body = new
             {
                 model = _model,
                 messages = new[] { new { role = "user", content = prompt } },
                 max_tokens = 50,
-                temperature = 0.5  // Lower = more consistent, reliable hashtags
+                temperature = 0.5
             };
 
             request.AddJsonBody(body);

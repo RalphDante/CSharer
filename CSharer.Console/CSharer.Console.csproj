@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSharer.Core\CSharer.Core.csproj" />
+    <ProjectReference Include="..\CSharer.Database\CSharer.Database.csproj" />
   </ItemGroup>
 
   <ItemGroup>
