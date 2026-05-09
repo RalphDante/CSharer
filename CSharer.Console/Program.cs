@@ -111,20 +111,14 @@ namespace CSharer.Console
                     System.Console.WriteLine("Hashtag Rules: " + tagRules);
 
                     // AI GENERATION
-                    /*
-                    var title = await aiService.GenerateStudyTitle(titleRules);
-                    var description = await aiService.GenerateStudyDescription(title, descRules);
-                    var hashtags = await aiService.GenerateHashtags(tagRules);
-                    */
+                    // var title = await aiService.GenerateStudyTitle(titleRules);
+                    // var description = await aiService.GenerateStudyDescription(title, descRules);
+                    // var hashtags = await aiService.GenerateHashtags(tagRules);
 
                     // TEST TEST RA (NO API KEY YET)
-                    string title;
-                    string description;
-                    string hashtags;
-
-                    title = "How To Study Smarter in 1 Hour 📚";
-                    description = "Learn powerful study hacks to boost your focus and retention. Start improving today!";
-                    hashtags = "#StudyTips #Focus #StudentLife";
+                    string title = "How To Study Smarter in 1 Hour 📚";
+                    string description = "Learn powerful study hacks to boost your focus and retention. Start improving today!";
+                    string hashtags = "#StudyTips #Focus #StudentLife";
 
                     System.Console.WriteLine("⚠️ Using MOCK AI (no API key)");
 
@@ -150,14 +144,14 @@ namespace CSharer.Console
                     System.Console.WriteLine("Saved to database.");
 
                     // YOUTUBE UPLOAD (OPTIONAL)
-                    /*
+                    
                     await youtubeService.UploadVideo(
                         videoPath,
                         title,
                         $"{description}\n\n{hashtags}",
                         settings.Defaults.Hashtags
                     );
-                    */
+                    
 
                     System.Console.WriteLine("Done!\n");
                 }
