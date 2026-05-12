@@ -210,6 +210,10 @@ namespace WinFormsApp2
             DeleteColumn2();
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SaveTextBox2();
+        }
         // BUTTON 5 = DELETE COLUMN 3
         private void button5_Click(object sender, EventArgs e)
         {
@@ -243,5 +247,7 @@ namespace WinFormsApp2
         {
 
         }
+
+        
     }
 }
