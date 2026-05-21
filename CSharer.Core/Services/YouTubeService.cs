@@ -47,7 +47,7 @@ namespace CSharer.Core.Services
                     },
                     Status = new VideoStatus
                     {
-                        PrivacyStatus = "public" // Change to "public" when ready
+                        PrivacyStatus = "private" // Change to "public" when ready
                     }
                 };
 

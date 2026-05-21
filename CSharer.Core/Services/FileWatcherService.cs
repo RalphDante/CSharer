@@ -3,7 +3,8 @@ namespace CSharer.Core.Services
     public class FileWatcherService
     {
         private FileSystemWatcher? _watcher;
-        public event Action<string>? OnNewVideoDetected;
+        public event Func<string, Task>? OnNewVideoDetected;
+
 
         private async Task<bool> IsFileReady(string filePath)
         {
@@ -17,8 +18,9 @@ namespace CSharer.Core.Services
                     using var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
                     return true;
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
+                        Console.WriteLine($"File locked: {ex.Message}"); // ← add this temporarily
                     await Task.Delay(500);
                 }
             }
@@ -42,17 +44,33 @@ namespace CSharer.Core.Services
             {
                 _ = Task.Run(async () =>
                 {
-                    Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] New video ready: {e.Name}");
-
-                    await Task.Delay(2000); // Let the rename fully settle
-
-                    if (!await IsFileReady(e.FullPath))
+                    try  // ← wrap the WHOLE thing
                     {
-                        Console.WriteLine($"Skipping {e.Name} - file not ready");
-                        return;
-                    }
+                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] New video ready: {e.Name}");
+                        await Task.Delay(2000);
 
-                    OnNewVideoDetected?.Invoke(e.FullPath);
+                        Console.WriteLine("Checking file readiness...");
+                        if (!await IsFileReady(e.FullPath))
+                        {
+                            Console.WriteLine($"Skipping {e.Name} - file not ready after 10s");
+                            return;
+                        }
+
+                        Console.WriteLine("File is ready, invoking handler...");
+
+                        // Await the handler properly instead of fire-and-forget
+                        if (OnNewVideoDetected != null)
+                        {
+                            Console.WriteLine("Invoking handler...");
+                            await OnNewVideoDetected.Invoke(e.FullPath);  // ← properly awaited now
+                            Console.WriteLine("Handler done.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"FileWatcher error: {ex.Message}");
+                        Console.WriteLine(ex.StackTrace);  // ← see exactly where it dies
+                    }
                 });
             };
             _watcher.EnableRaisingEvents = true;
