@@ -7,6 +7,17 @@ namespace CSharer.Core.Services
     {
         private readonly string _apiKey;
         private readonly string _model;
+        private readonly Random _random = new Random();
+
+        private readonly string[] _titleFormulas = new[]
+        {
+            "The [Adjective] Way To [Achieve Result] Without [Common Pain]",
+            "Why [Common Belief] Is Killing Your [Desired Outcome]",
+            "Stop [Wrong Behavior] — Do This Instead",
+            "What Top Students Know About [Topic] That You Don't",
+            "[Unexpected Claim]: How I [Achieved Result] In [Short Time]",
+            "[Number] [Specific Things] That [Result]"
+        };
 
         public AIService(string apiKey, string model = "llama-3.3-70b-versatile")
         {
@@ -16,18 +27,24 @@ namespace CSharer.Core.Services
 
         public async Task<string> GenerateStudyTitle(string extraRules = "")
         {
+            var chosenFormula = _titleFormulas[_random.Next(_titleFormulas.Length)];
+
             var client = new RestClient("https://api.groq.com/openai/v1/chat/completions");
             var request = new RestRequest("", Method.Post);
 
             request.AddHeader("Authorization", $"Bearer {_apiKey}");
             request.AddHeader("Content-Type", "application/json");
 
-            var prompt = "Generate ONE unique, viral YouTube title for a study tips video. " +
-                         "Topics can include: gamifying studying, focus techniques, note-taking methods, " +
-                         "beating procrastination, memory tricks, study schedules, or exam prep. " +
-                         "Format: 'How To [Action] [Benefit]' or similar. Keep the full title under 70 characters. " +
-                         $"Additional instructions: {extraRules} " +
-                         "No quotes. Just the title.";
+            var prompt = $"You MUST follow these rules: {extraRules} " +
+                $"You MUST use ONLY this headline formula and no other: '{chosenFormula}'. " +
+                "Generate ONE unique, high-converting YouTube title for a study tips video. " +
+                "Apply these copywriting principles from Jim Edwards' 'Copywriting Secrets': " +
+                "1) Speak directly to a specific PAIN or DESIRE the viewer already has. " +
+                "2) Promise a clear, specific, believable result — avoid vague words like 'better' or 'smarter'. " +
+                "3) Use SPECIFICITY to build credibility (e.g. '3 hours', 'one page', '2 weeks', '5 steps'). " +
+                "4) Create CURIOSITY or a pattern interrupt — the title should feel surprising or counterintuitive. " +
+                "Topics: gamifying studying, focus, note-taking, procrastination, memory, exam prep, deep work. " +
+                "Max 70 characters. No quotes. Return ONLY the title, nothing else.";
 
             var body = new
             {
@@ -55,9 +72,9 @@ namespace CSharer.Core.Services
             request.AddHeader("Authorization", $"Bearer {_apiKey}");
             request.AddHeader("Content-Type", "application/json");
 
-            var prompt = $"Write a 2-3 sentence YouTube description for a study tips video titled: \"{title}\". " +
-                         "Be engaging, mention what viewers will learn, and end with a call to action. No hashtags. " +
-                         $"Additional instructions: {extraRules}";
+            var prompt = $"You MUST follow these rules: {extraRules} " +
+             $"Write a 2-3 sentence YouTube description for a study tips video titled: \"{title}\". " +
+             "Be engaging, mention what viewers will learn, and end with a call to action. No hashtags.";
 
             var body = new
             {
@@ -85,10 +102,10 @@ namespace CSharer.Core.Services
             request.AddHeader("Authorization", $"Bearer {_apiKey}");
             request.AddHeader("Content-Type", "application/json");
 
-            var prompt = "Generate 5 YouTube hashtags for a study tips video. " +
-                         "Mix broad and niche tags. Examples of good ones: #StudyTips #HowToStudy #StudentLife #StudyMotivation #ExamPrep. " +
-                         $"Additional instructions: {extraRules} " +
-                         "Return ONLY the hashtags separated by spaces, nothing else.";
+            var prompt = $"You MUST follow these rules: {extraRules} " +
+             "Generate 5 YouTube hashtags for a study tips video. " +
+             "Mix broad and niche tags. Examples of good ones: #StudyTips #HowToStudy #StudentLife #StudyMotivation #ExamPrep. " +
+             "Return ONLY the hashtags separated by spaces, nothing else.";
 
             var body = new
             {

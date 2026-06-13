@@ -11,6 +11,8 @@ namespace CSharer.Core.Config
     {
         public GroqSettings Groq { get; set; } = new();
         public YouTubeSettings YouTube { get; set; } = new();
+        public BufferSettings Buffer { get; set; } = new();
+        public CloudinarySettings Cloudinary { get; set; } = new();
     }
 
     public class GroqSettings
@@ -22,6 +24,25 @@ namespace CSharer.Core.Config
     public class YouTubeSettings
     {
         public string ClientSecretPath { get; set; } = string.Empty;
+    }
+
+    public class BufferSettings
+    {
+        public string ApiKey { get; set; } = string.Empty;
+        public List<BufferChannel> Channels { get; set; } = new();
+    }
+
+    public class BufferChannel
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Service { get; set; } = string.Empty;
+    }
+
+    public class CloudinarySettings
+    {
+        public string CloudName { get; set; } = string.Empty;
+        public string ApiKey { get; set; } = string.Empty;
+        public string ApiSecret { get; set; } = string.Empty;
     }
 
     public class DefaultSettings
